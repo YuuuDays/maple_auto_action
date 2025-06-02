@@ -37,3 +37,11 @@ wheels/
 # 環境変数
 .env
 .env.local 
+
+*.txt
+*.csv
+*.json
+*.yaml
+*.yml
+*.ini
+*.conf
