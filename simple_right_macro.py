@@ -53,6 +53,26 @@ def random_super_long_delay():
     delay = random.uniform(1.8, 2.5)
     time.sleep(delay)
 
+# より複雑なランダムディレイ関数
+def complex_random_delay():
+    base_delay = random.uniform(0.2, 0.4)
+    variation = random.uniform(-0.1, 0.1)
+    return base_delay + variation
+
+def complex_long_delay():
+    base_delay = random.uniform(1.0, 1.8)
+    variation = random.uniform(-0.2, 0.2)
+    return base_delay + variation
+
+def complex_super_long_delay():
+    base_delay = random.uniform(1.8, 2.5)
+    variation = random.uniform(-0.3, 0.3)
+    return base_delay + variation
+
+# より複雑なランダム数値生成
+def complex_random_number():
+    return random.randint(0, 100) + random.uniform(0, 1)
+
 """
 移動系(ワープ付き)
 """
@@ -111,20 +131,19 @@ def nomal_down():
 # 攻撃
 """
 def attack():
-    #3回数
-    for i in range(4):
+    # より複雑な攻撃パターン
+    attack_count = random.randint(3, 5)
+    for i in range(attack_count):
         keyboard.send('q')
-        mini_delay()
-        if random_number() %2 == 0:
+        time.sleep(complex_random_delay())
+        if complex_random_number() > 50:
             keyboard.send('q')
-            mini_delay()
+            time.sleep(complex_random_delay())
 
-    #ランダム三回目
-    if random_number() %2 == 0:
+    if complex_random_number() > 70:
         keyboard.press('q')
-        random_delay()
+        time.sleep(complex_random_delay())
         keyboard.release('q')
-    
 
 def attack_2():
     for i in range(2):
@@ -202,14 +221,9 @@ def main_macro():
             another_action()
             position_counter += 1
             # 場所位置修正
-            if position_counter == 12:
-                position_counter = 0
-                keyboard.press('left')
-                move_mini_delay()
-                keyboard.release('left')
-                move_mini_delay()
+            if position_counter == 11:
                 keyboard.send('9')
-                print("報告  :12回移動したので左へ位置修正!")
+                position_counter =0
                 print("スキル:大天狗出現!")
                 
             
@@ -287,16 +301,20 @@ def action_define():
         keyboard.release('a')
 
 def another_action():
-    
-    #　化け物追加
-    if random_number() %2 == 0:
+    # より複雑な行動パターン
+    if complex_random_number() > 50:
         keyboard.press('4')
-        mini_delay()
+        time.sleep(complex_random_delay())
         keyboard.release('4')
     else:
         keyboard.press('0')
-        random_delay()
+        time.sleep(complex_random_delay())
         keyboard.release('0')
+
+    # 天狗攻撃のタイミングをランダム化
+    if complex_random_number() > 60:
+        keyboard.send('3')
+        time.sleep(complex_random_delay())
 
     # 天狗攻撃いっぞ！
     # 1段目
