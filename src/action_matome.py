@@ -44,6 +44,18 @@ def which_one_attack():
         attack_2()
     complex_random_delay()
 
+def special_attack():
+    complex_random_delay()
+    print("特殊攻撃")
+    if random.randint(0, 1) == 0:
+        keyboard.press('space')
+        move_mini_delay()
+        keyboard.release('space')
+    else:
+        keyboard.press('shift')
+        move_mini_delay()
+        keyboard.release('shift')
+
 #========================
 # 行動定義
 #========================
@@ -77,7 +89,7 @@ def right_move():
     
     # 右キーを押す
     keyboard.press('right')
-    time.sleep(0.8)
+    move_mini_delay()
 
     # cキーを確実に2回押す
     keyboard.press('c')
@@ -88,7 +100,8 @@ def right_move():
     keyboard.press('c')
     mini_delay()  # 少し長めに押す
     keyboard.release('c')
-    time.sleep(0.8)
+    move_mini_delay()
+    move_mini_delay()
 
     # 右キーを離す
     keyboard.release('right')
@@ -101,7 +114,7 @@ def left_move():
 
     keyboard.press('left')
 
-        # cキーを確実に2回押す
+    # cキーを確実に2回押す
     keyboard.press('c')
     mini_delay()  # 少し長めに押す
     keyboard.release('c')
@@ -110,7 +123,8 @@ def left_move():
     keyboard.press('c')
     mini_delay()  # 少し長めに押す
     keyboard.release('c')
-    time.sleep(0.8)
+    move_mini_delay()
+    move_mini_delay()
 
     keyboard.release('left')
     complex_random_delay()
@@ -122,6 +136,7 @@ def action_define():
     #　左側
 
     #　左上3段目
+    keyboard.press('6')
     which_one_attack()
     move_mini_delay()
     down_move()
@@ -137,13 +152,18 @@ def action_define():
     which_one_attack()
     right_move()
     print("最下層右移動")
+    special_attack()
     complex_random_delay()
     which_one_attack()
     right_move()
     print("最下層右移動")
+
     # 右側
     up_move1()
-    keyboard.send('left')
+    move_mini_delay()
+    keyboard.press('left')
+    time.sleep(0.5)
+    keyboard.release('left')
 
     complex_random_delay()
     which_one_attack()
@@ -154,10 +174,46 @@ def action_define():
     complex_random_delay()
 
     # -----ここから折り返し
+    print("折り返し")
 
+    #　右上3段目
+    which_one_attack()
+    move_mini_delay()
+    down_move()
 
+    # 右上2段目
+    complex_random_delay()
+    which_one_attack()
+    complex_random_delay()
+    down_move()
 
+    #　一番下
+    complex_random_delay()
+    which_one_attack()
+    left_move()
+    print("最下層左移動")
+    special_attack()
+    which_one_attack()
+    left_move()
+    print("最下層左移動")
 
+    #上ります
+    mini_delay()
+    up_move1()
+
+    keyboard.press('right')
+    time.sleep(0.8)
+    keyboard.release('right')
+
+    move_mini_delay()
+    which_one_attack()
+    complex_random_delay()
+
+    up_move1()
+    which_one_attack()
+    complex_random_delay()
+
+    keyboard.press('d')
 
 
 

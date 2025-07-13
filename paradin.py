@@ -30,8 +30,8 @@ def main_macro():
     while is_running:
         #ここに処理を入れる↓
         time.sleep(0.1)
-        left_move()
-        # action_define()
+
+        action_define()
 
 # 停止
 def stop_macro():
