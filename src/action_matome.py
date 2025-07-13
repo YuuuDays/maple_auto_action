@@ -17,6 +17,11 @@ def move_mini_delay():
     delay = random.uniform(0.4, 0.6)
     time.sleep(delay)
 
+# 0.1~0.3秒のディレイ
+def mini_delay():
+    delay = random.uniform(0.1, 0.3)
+    time.sleep(delay)
+
 #========================
 #攻撃定義
 #========================
@@ -76,12 +81,12 @@ def right_move():
 
     # cキーを確実に2回押す
     keyboard.press('c')
-    time.sleep(0.1)  # 少し長めに押す
+    mini_delay()  # 少し長めに押す
     keyboard.release('c')
-    time.sleep(0.3)  # 間隔を空ける
+    mini_delay()  # 間隔を空ける
     
     keyboard.press('c')
-    time.sleep(0.1)  # 少し長めに押す
+    mini_delay()  # 少し長めに押す
     keyboard.release('c')
     time.sleep(0.8)
 
@@ -98,12 +103,12 @@ def left_move():
 
         # cキーを確実に2回押す
     keyboard.press('c')
-    time.sleep(0.1)  # 少し長めに押す
+    mini_delay()  # 少し長めに押す
     keyboard.release('c')
-    time.sleep(0.3)  # 間隔を空ける
+    mini_delay()  # 間隔を空ける
     
     keyboard.press('c')
-    time.sleep(0.1)  # 少し長めに押す
+    mini_delay()  # 少し長めに押す
     keyboard.release('c')
     time.sleep(0.8)
 
