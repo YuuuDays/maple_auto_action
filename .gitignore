@@ -45,3 +45,5 @@ wheels/
 *.yml
 *.ini
 *.conf
+
+memo.txt
