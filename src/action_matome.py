@@ -1,13 +1,14 @@
 import keyboard
 import time
 import random
+from datetime import datetime, timedelta, timezone
 
 # ===================================
 #ディレイ
 # ===================================
 # より複雑なランダムディレイ関数
 def complex_random_delay():
-    base_delay = random.uniform(0.2, 0.4)
+    base_delay = random.uniform(0.2, 0.6)
     variation = random.uniform(-0.1, 0.1)
     delay = base_delay + variation
     time.sleep(delay)  # 実際に待機する
@@ -46,7 +47,6 @@ def which_one_attack():
 
 def special_attack():
     complex_random_delay()
-    print("特殊攻撃")
     if random.randint(0, 1) == 0:
         keyboard.press('space')
         move_mini_delay()
@@ -132,6 +132,13 @@ def left_move():
 #========================
 # メイン
 #========================
+# プログラム起動時に「マクロ開始！」を表示し、その後に日本時間の現在時刻を表示
+JST = timezone(timedelta(hours=9), 'JST')
+print("マクロ開始！")
+print("現在時刻: ", datetime.now(JST).strftime("%Y-%m-%d %H:%M:%S"))
+
+start_time = time.time()
+
 def action_define():
     #　左側
 
@@ -147,22 +154,29 @@ def action_define():
     complex_random_delay()
     down_move()
 
+    if random.randint(0, 1) == 0:
+        keyboard.press('2')
+        time.sleep(0.5)
+        keyboard.press('1')
+    else:
+        keyboard.press('F12')
+        time.sleep(0.5)
+        keyboard.press('space')
+    time.sleep(0.5)
     # 最下層
     complex_random_delay()
     which_one_attack()
     right_move()
-    print("最下層右移動")
     special_attack()
     complex_random_delay()
     which_one_attack()
     right_move()
-    print("最下層右移動")
 
     # 右側
     up_move1()
     move_mini_delay()
     keyboard.press('left')
-    time.sleep(0.5)
+    time.sleep(0.4)
     keyboard.release('left')
 
     complex_random_delay()
@@ -174,7 +188,6 @@ def action_define():
     complex_random_delay()
 
     # -----ここから折り返し
-    print("折り返し")
 
     #　右上3段目
     which_one_attack()
@@ -191,18 +204,27 @@ def action_define():
     complex_random_delay()
     which_one_attack()
     left_move()
-    print("最下層左移動")
+
+    if random.randint(0, 1) == 0:
+        keyboard.press('space')
+        time.sleep(0.5)
+        keyboard.release('space')
+    else:
+        keyboard.press('shift')
+        time.sleep(0.5)
+        keyboard.release('shift')
+    time.sleep(0.5)
+    
     special_attack()
     which_one_attack()
     left_move()
-    print("最下層左移動")
 
     #上ります
     mini_delay()
     up_move1()
 
     keyboard.press('right')
-    time.sleep(0.8)
+    time.sleep(0.4)
     keyboard.release('right')
 
     move_mini_delay()
@@ -214,6 +236,10 @@ def action_define():
     complex_random_delay()
 
     keyboard.press('d')
+
+    # 1周ごとに経過時間を表示
+    elapsed = time.time() - start_time
+    print(f"経過時間:{int(elapsed//60)}分({int(elapsed%60)}秒)")
 
 
 
