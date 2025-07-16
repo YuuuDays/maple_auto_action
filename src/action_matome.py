@@ -240,8 +240,3 @@ def action_define():
     # 1周ごとに経過時間を表示
     elapsed = time.time() - start_time
     print(f"経過時間:{int(elapsed//60)}分({int(elapsed%60)}秒)")
-
-
-
-
-
