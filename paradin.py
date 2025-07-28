@@ -1,7 +1,7 @@
 import keyboard
 import time
 import random
-from src.action_matome import *
+from gekisen_nishi import *
 # import pyautogui  # 必要に応じてコメントアウトを外す
 
 # =============================
@@ -30,8 +30,9 @@ def main_macro():
     while is_running:
         #ここに処理を入れる↓
         time.sleep(0.1)
+        gekisen_nishi_action()
 
-        action_define()
+        # action_define()
 
 # 停止
 def stop_macro():
