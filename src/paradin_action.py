@@ -23,6 +23,8 @@ def mini_delay():
     delay = random.uniform(0.1, 0.3)
     time.sleep(delay)
 
+def aisatsu():
+    print("hellooo")
 #========================
 #攻撃定義
 #========================

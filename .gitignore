@@ -2,7 +2,7 @@
 venv/
 env/
 .env/
-
+.venv/
 # Python関連
 __pycache__/
 *.py[cod]
