@@ -49,9 +49,9 @@ def which_one_n_attack():
 
 # 60秒に一回
 def time_60_attack():
-    keyboard.press('"\"')
+    keyboard.press('m')
     complex_random_delay()
-    keyboard.press('"\"')
+    keyboard.press('m')
 
 #　追尾ハンマーかアタックハンマー
 def special_attack():
@@ -64,6 +64,25 @@ def special_attack():
         keyboard.press('shift')
         move_mini_delay()
         keyboard.release('shift')
+    
+# 通常攻撃かスペシャル攻撃か
+def which_n_or_special():
+    complex_random_delay()
+    if random.randint(0, 1) == 0:
+        special_attack()
+    else:
+        which_one_n_attack()
+# fake
+def fake_action():
+    if random.randint(0, 1) == 0:
+        time.sleep(0.5)
+        keyboard.press('1')
+    else:
+        keyboard.press('F12')
+        time.sleep(0.5)
+        keyboard.press('F12')
+        time.sleep(0.5)
+    time.sleep(0.5)
 
 #========================
 # 行動定義
@@ -72,6 +91,7 @@ MOVE_KEYS = ['left', 'right', 'up', 'down']  # 移動キー
 
 #下移動
 def down_move():
+    complex_random_delay()
     complex_random_delay()
     keyboard.press('down')
     keyboard.press('c')
@@ -87,10 +107,6 @@ def up_move1():
     keyboard.release('e')
     complex_random_delay()
 
-# #上移動_2
-# def up_move2():
-#     move_mini_delay()
-#     keyboard.send('kanji')
 
 # 右移動
 def right_move():
