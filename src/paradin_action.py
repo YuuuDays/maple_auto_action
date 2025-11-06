@@ -28,25 +28,32 @@ def aisatsu():
 #========================
 #攻撃定義
 #========================
-def attack():
+def n_attack():
     keyboard.press('q')
     complex_random_delay()
     keyboard.release('q')
 
-def attack_2():
+def n_attack2():
     keyboard.press('w')
     complex_random_delay()
     keyboard.release('w')
 
 # 攻撃どっちだ～
-def which_one_attack():
+def which_one_n_attack():
     complex_random_delay()
     if random.randint(0, 1) == 0:
-        attack()
+        n_attack()
     else:
-        attack_2()
+        n_attack2()
     complex_random_delay()
 
+# 60秒に一回
+def time_60_attack():
+    keyboard.press('"\"')
+    complex_random_delay()
+    keyboard.press('"\"')
+
+#　追尾ハンマーかアタックハンマー
 def special_attack():
     complex_random_delay()
     if random.randint(0, 1) == 0:
@@ -131,114 +138,4 @@ def left_move():
     keyboard.release('left')
     complex_random_delay()
 
-#========================
-# メイン
-#========================
-# プログラム起動時に「マクロ開始！」を表示し、その後に日本時間の現在時刻を表示
-JST = timezone(timedelta(hours=9), 'JST')
-print("マクロ開始！")
-print("現在時刻: ", datetime.now(JST).strftime("%Y-%m-%d %H:%M:%S"))
 
-start_time = time.time()
-
-def action_define():
-    #　左側
-
-    #　左上3段目
-    keyboard.press('6')
-    which_one_attack()
-    move_mini_delay()
-    down_move()
-
-    # 左上2段目
-    complex_random_delay()
-    which_one_attack()
-    complex_random_delay()
-    down_move()
-
-    if random.randint(0, 1) == 0:
-        keyboard.press('2')
-        time.sleep(0.5)
-        keyboard.press('1')
-    else:
-        keyboard.press('F12')
-        time.sleep(0.5)
-        keyboard.press('space')
-    time.sleep(0.5)
-    # 最下層
-    complex_random_delay()
-    which_one_attack()
-    right_move()
-    special_attack()
-    complex_random_delay()
-    which_one_attack()
-    right_move()
-
-    # 右側
-    up_move1()
-    move_mini_delay()
-    keyboard.press('left')
-    time.sleep(0.4)
-    keyboard.release('left')
-
-    complex_random_delay()
-    which_one_attack()
-    complex_random_delay()
-
-    up_move1()
-    which_one_attack()
-    complex_random_delay()
-
-    # -----ここから折り返し
-
-    #　右上3段目
-    which_one_attack()
-    move_mini_delay()
-    down_move()
-
-    # 右上2段目
-    complex_random_delay()
-    which_one_attack()
-    complex_random_delay()
-    down_move()
-
-    #　一番下
-    complex_random_delay()
-    which_one_attack()
-    left_move()
-
-    if random.randint(0, 1) == 0:
-        keyboard.press('space')
-        time.sleep(0.5)
-        keyboard.release('space')
-    else:
-        keyboard.press('shift')
-        time.sleep(0.5)
-        keyboard.release('shift')
-    time.sleep(0.5)
-    
-    special_attack()
-    which_one_attack()
-    left_move()
-
-    #上ります
-    mini_delay()
-    up_move1()
-
-    keyboard.press('right')
-    time.sleep(0.4)
-    keyboard.release('right')
-
-    move_mini_delay()
-    which_one_attack()
-    complex_random_delay()
-
-    up_move1()
-    which_one_attack()
-    complex_random_delay()
-
-    keyboard.press('d')
-
-    # 1周ごとに経過時間を表示
-    elapsed = time.time() - start_time
-    print(f"経過時間:{int(elapsed//60)}分({int(elapsed%60)}秒)")
