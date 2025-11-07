@@ -51,8 +51,12 @@ def which_one_n_attack():
 def time_60_attack():
     keyboard.press('m')
     complex_random_delay()
-    keyboard.press('m')
+    keyboard.release('m')
 
+def spaider_attack():
+    move_mini_delay()
+    keyboard.send('6')
+    
 #　追尾ハンマーかアタックハンマー
 def special_attack():
     complex_random_delay()
@@ -74,24 +78,23 @@ def which_n_or_special():
         which_one_n_attack()
 # fake
 def fake_action():
+    time.sleep(0.5)
     if random.randint(0, 1) == 0:
-        time.sleep(0.5)
-        keyboard.press('1')
+        keyboard.send('1')
     else:
-        keyboard.press('F12')
+        keyboard.send('F12')
         time.sleep(0.5)
-        keyboard.press('F12')
-        time.sleep(0.5)
+        keyboard.send('F12')
     time.sleep(0.5)
 
 def fake_action2():
     time.sleep(0.5)
     if random.randint(0, 1) == 0:
-        keyboard.press('d')
+        keyboard.send('d')
     else:
-        keyboard.press('end')
+        keyboard.send('end')
     time.sleep(0.5)
-    
+
 #========================
 # 行動定義
 #========================

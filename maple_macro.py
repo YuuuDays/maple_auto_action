@@ -83,5 +83,5 @@ def main_macro():
 if __name__ == "__main__":
     print("F1でマクロ開始、ESCで停止")
     keyboard.add_hotkey('f1', main_macro)
-    keyboard.add_hotkey('esc', stop_macro)
+    # keyboard.add_hotkey('esc', stop_macro)
     keyboard.wait()  # 何かキーが押されるまで待機（ESCでstop_macroが呼ばれる） 

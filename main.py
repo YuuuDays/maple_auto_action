@@ -8,7 +8,8 @@ def main():
     print("マクロ開始！")
     print("現在時刻: ", datetime.now(JST).strftime("%Y-%m-%d %H:%M:%S"))
     
-    lab_behind_the_closed_door_4.action_define()
+    while True:
+        lab_behind_the_closed_door_4.action_define()
 
 
 
