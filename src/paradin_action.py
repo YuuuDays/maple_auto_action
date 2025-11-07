@@ -84,6 +84,14 @@ def fake_action():
         time.sleep(0.5)
     time.sleep(0.5)
 
+def fake_action2():
+    time.sleep(0.5)
+    if random.randint(0, 1) == 0:
+        keyboard.press('d')
+    else:
+        keyboard.press('end')
+    time.sleep(0.5)
+    
 #========================
 # 行動定義
 #========================
@@ -107,6 +115,12 @@ def up_move1():
     keyboard.release('e')
     complex_random_delay()
 
+#上移動2
+def up_move2():
+    keyboard.press(41)
+    move_mini_delay()
+    keyboard.release(41)
+    complex_random_delay()
 
 # 右移動
 def right_move():
