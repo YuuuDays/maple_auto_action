@@ -131,8 +131,26 @@ def right_move():
     # 右キーを離す
     keyboard.release('right')
     complex_random_delay()
-    
 
+# 若干の右移動
+def little_turn_right_move():
+    complex_random_delay()
+
+    keyboard.press('right')
+    complex_random_delay()
+    keyboard.release('right')
+
+    move_mini_delay()
+
+# 若干の左移動
+def little_turn_left_move():
+    complex_random_delay()
+
+    keyboard.press('left')
+    complex_random_delay()
+    keyboard.release('left')
+
+    move_mini_delay()
 # 左移動
 def left_move():
     complex_random_delay()
