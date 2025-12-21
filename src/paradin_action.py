@@ -8,7 +8,7 @@ from datetime import datetime, timedelta, timezone
 # ===================================
 # より複雑なランダムディレイ関数
 def complex_random_delay():
-    base_delay = random.uniform(0.2, 0.6)
+    base_delay = random.uniform(0.2, 0.7)
     variation = random.uniform(-0.1, 0.1)
     delay = base_delay + variation
     time.sleep(delay)  # 実際に待機する

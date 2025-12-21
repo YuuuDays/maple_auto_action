@@ -6,9 +6,16 @@ from datetime import datetime, timedelta, timezone
 # ===================================
 #ディレイ
 # ===================================
+#レン攻撃用眺め
+def long_randm_delay():
+    base_delay = random.uniform(0.5, 1.3)
+    variation = random.uniform(-0.1, 0.1)
+    delay = base_delay + variation
+    time.sleep(delay)  # 実際に待機する
+
 # より複雑なランダムディレイ関数
 def complex_random_delay():
-    base_delay = random.uniform(0.2, 0.6)
+    base_delay = random.uniform(0.2, 0.7)
     variation = random.uniform(-0.1, 0.1)
     delay = base_delay + variation
     time.sleep(delay)  # 実際に待機する
@@ -33,7 +40,7 @@ def aisatsu():
 #========================
 def n_attack():
     keyboard.press('q')
-    complex_random_delay()
+    long_randm_delay()
     keyboard.release('q')
 
 def n_attack2():
@@ -77,7 +84,7 @@ def no_meanig_select():
     if choice==1:
         keyboard.send('end')
         complex_random_delay()
-        
+
     elif choice==2:
         no_meaning_change()
     else:
