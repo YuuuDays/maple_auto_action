@@ -47,3 +47,5 @@ wheels/
 *.conf
 
 memo.txt
+
+*.json
