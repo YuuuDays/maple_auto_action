@@ -1,5 +1,7 @@
 import lab_behind_the_closed_door_4,sekainohate_2_5_ren
 import src.ren_action as test_ren
+import src.key_input as key_input
+import src.key_reproduction as key_rep
 
 import time
 from datetime import datetime, timedelta, timezone
@@ -9,9 +11,22 @@ from typing import Callable, Optional
 #         test_ren.up_move1()
 #         time.sleep(2)
 
+#動きの記録
+def action_record():
+    key_input.record_keys()
+
+#動きの再生
+def action_reproduction():
+    key_rep.play_record()
+
 def main():
     # test_func()
+    action_reproduction()
+
     
+
+
+def main_action():
     input_number = 0
     action: Optional[Callable[[], None]] = None
     #選択し
@@ -39,9 +54,6 @@ def main():
     
     while True:
         action()
-
-
-
 
 if __name__ == "__main__":
     main()
