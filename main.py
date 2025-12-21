@@ -20,7 +20,7 @@ def action_reproduction():
     key_rep.play_record()
 
 def main():
-    # test_func()
+    # action_record()
     action_reproduction()
 
     

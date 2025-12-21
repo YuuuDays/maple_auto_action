@@ -4,7 +4,7 @@ from pathlib import Path
 
 def play_record():
     """record.json を読み込んでキー操作を再生する♡"""
-
+    print("再生します")
     kb = Controller()
 
     BASE_DIR = Path(__file__).resolve().parent.parent
