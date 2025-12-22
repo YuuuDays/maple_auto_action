@@ -20,8 +20,8 @@ def action_reproduction():
     key_rep.play_record()
 
 def main():
-    # action_record()
-    action_reproduction()
+    action_record()
+    # action_reproduction()
 
     
 
