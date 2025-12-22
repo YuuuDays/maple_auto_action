@@ -19,9 +19,32 @@ def action_record():
 def action_reproduction():
     key_rep.play_record()
 
+# 記録と再生の選択肢
+def action_select():
+    action: Optional[Callable[[], None]] = None
+    print("記録と再生どちらにしますか")
+    print("1:再生")
+    print("2:記録")
+    print("/n")
+
+    choise = input().strip()
+
+    #再生
+    if choise == "1":
+        action = action_reproduction
+    #記録
+    elif choise== "2":
+        action = action_record
+    else:
+        print("1か2を入れてください")
+        return
+    
+    assert action is not None  # ここで型を確定
+    action()
+
+
 def main():
-    action_record()
-    # action_reproduction()
+    action_select()
 
     
 

@@ -3,12 +3,33 @@ from pynput.keyboard import Controller, Key
 from pathlib import Path
 
 def play_record():
-    """record.json を読み込んでキー操作を再生する♡"""
-    print("再生します")
+    """records フォルダから選んだJSONを再生する♡"""
+
     kb = Controller()
 
     BASE_DIR = Path(__file__).resolve().parent.parent
-    json_path = BASE_DIR / "record.json"
+    RECORD_DIR = BASE_DIR / "records"
+
+    json_files = sorted(RECORD_DIR.glob("*.json"))
+    if not json_files:
+        print("再生できる記録がないよ…♡")
+        return
+
+    # 一覧表示♡
+    print("再生可能な記録一覧♡")
+    for i, path in enumerate(json_files, start=1):
+        print(f"[{i}] {path.name}")
+
+    # ユーザ選択♡
+    try:
+        choice = int(input("\n番号を選んでね → "))
+        json_path = json_files[choice - 1]
+    except (ValueError, IndexError):
+        print("番号が正しくないよ…♡")
+        return
+
+    print(f"選択されたファイル → {json_path.name}")
+    print("再生開始♡")
 
     with open(json_path, encoding="utf-8") as f:
         events = json.load(f)
