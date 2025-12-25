@@ -3,7 +3,7 @@ from pynput.keyboard import Controller, Key
 from pathlib import Path
 
 def play_record():
-    """records フォルダから選んだJSONを再生する♡"""
+    """records フォルダから選んだJSONを再生する♡（先頭timeを0に補正）"""
 
     kb = Controller()
 
@@ -34,28 +34,41 @@ def play_record():
     with open(json_path, encoding="utf-8") as f:
         events = json.load(f)
 
+    if not events:
+        print("中身が空だったよ…♡")
+        return
+
+    # ✅ 先頭イベントの time を 0 に補正♡
+    first_time = float(events[0].get("time", 0.0))
+    for e in events:
+        t = float(e.get("time", 0.0))
+        e["time"] = max(0.0, t - first_time)
+
     start = time.perf_counter()
 
     def str_to_key(key_str):
         if key_str is None:
             return None
-        if len(key_str) == 1:
+        if isinstance(key_str, str) and len(key_str) == 1:
             return key_str
         try:
             return Key[key_str]
-        except KeyError:
+        except Exception:
             return None
 
     for e in events:
-        # 指定時刻まで待つ（元の入力タイミング再現♡）
-        while time.perf_counter() - start < e["time"]:
+        target_time = float(e.get("time", 0.0))
+
+        # 指定時刻まで待つ（補正後のタイミングで再現♡）
+        while time.perf_counter() - start < target_time:
             pass
 
         k = str_to_key(e.get("key"))
         if k is None:
             continue
 
-        if e["type"] == "press":
+        etype = e.get("type")
+        if etype == "press":
             kb.press(k)
-        elif e["type"] == "release":
+        elif etype == "release":
             kb.release(k)

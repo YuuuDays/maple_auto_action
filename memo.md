@@ -8,7 +8,7 @@ pip install -r requirements.txt
 
 
 # 仮想環境(.venv)の起動方法（PowerShell）
-cd C:\path\to\your\project
+cd C:\Users\ponpo\Desktop\★プログラム保\maple_macro\maple_auto_action
 .\.venv\Scripts\Activate.ps1
 
 # Pythonファイルの実行
