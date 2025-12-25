@@ -100,7 +100,7 @@ def play_record():
                 if pause_event.is_set():
                     if pause_started_at is None:
                         pause_started_at = time.perf_counter()
-                    time.sleep(0.01)
+                    time.sleep(0.03)
                     continue
                 else:
                     # 停止から復帰した瞬間、停止時間を加算
@@ -113,7 +113,7 @@ def play_record():
                     break
 
                 # CPU爆食い防止♡（精度はそこそこ維持）
-                time.sleep(0.001)
+                time.sleep(0.03)
 
             if stop_event.is_set():
                 break
