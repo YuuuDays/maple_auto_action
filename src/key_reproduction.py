@@ -5,32 +5,56 @@ from pathlib import Path
 PAUSE_KEY = Key.f8   # 一時停止/再開
 STOP_KEY  = Key.f9   # 中止（任意）
 
+def choose_from_list(items, title, show_name=lambda p: p.name):
+    """番号選択ユーティリティ♡（itemsが空ならNone）"""
+    if not items:
+        print("選べる項目がないよ…♡")
+        return None
+
+    print(title)
+    for i, it in enumerate(items, start=1):
+        print(f"[{i}] {show_name(it)}")
+
+    try:
+        choice = int(input("\n番号を選んでね → "))
+        return items[choice - 1]
+    except (ValueError, IndexError):
+        print("番号が正しくないよ…♡")
+        return None
+
 def play_record():
-    """records フォルダから選んだJSONを再生（先頭time補正 + 一時停止/再開）"""
+    """records/配下のフォルダ→json を2段階で選んで再生♡"""
 
     kb = Controller()
 
     BASE_DIR = Path(__file__).resolve().parent.parent
     RECORD_DIR = BASE_DIR / "records"
 
-    json_files = sorted(RECORD_DIR.glob("*.json"))
-    if not json_files:
-        print("再生できる記録がないよ…♡")
+    # --- 1段目：records直下のフォルダを選ぶ ---
+    # フォルダだけ抽出（.jsonファイルが直下に混ざってても無視）
+    folders = sorted([p for p in RECORD_DIR.iterdir() if p.is_dir()])
+
+    folder = choose_from_list(
+        folders,
+        title="再生したいフォルダを選んでね♡",
+        show_name=lambda p: p.name
+    )
+    if folder is None:
         return
 
-    print("再生可能な記録一覧♡")
-    for i, path in enumerate(json_files, start=1):
-        print(f"[{i}] {path.name}")
+    # --- 2段目：そのフォルダ内のjsonを選ぶ ---
+    json_files = sorted(folder.glob("*.json"))
 
-    try:
-        choice = int(input("\n番号を選んでね → "))
-        json_path = json_files[choice - 1]
-    except (ValueError, IndexError):
-        print("番号が正しくないよ…♡")
+    json_path = choose_from_list(
+        json_files,
+        title=f"\n『{folder.name}』の中の記録一覧だよ♡",
+        show_name=lambda p: p.name
+    )
+    if json_path is None:
         return
 
-    print(f"選択されたファイル → {json_path.name}")
-    print(f"再生開始♡（一時停止/再開: F8, 中止: F9）")
+    print(f"\n選択されたファイル → {folder.name}/{json_path.name}")
+    print("再生開始♡（一時停止/再開: F8, 中止: F9）")
 
     with open(json_path, encoding="utf-8") as f:
         events = json.load(f)
@@ -55,12 +79,10 @@ def play_record():
         except Exception:
             return None
 
-    # --- 一時停止/中止フラグ（スレッド安全♡） ---
     pause_event = threading.Event()   # set() されている間は「停止中」
     stop_event = threading.Event()    # set() されたら中止
 
     def on_press(key):
-        # F8でトグル（一時停止/再開）
         if key == PAUSE_KEY:
             if pause_event.is_set():
                 pause_event.clear()
@@ -68,21 +90,17 @@ def play_record():
             else:
                 pause_event.set()
                 print("⏸ 一時停止♡（F8で再開）")
-
-        # F9で中止
         elif key == STOP_KEY:
             stop_event.set()
-            pause_event.clear()  # 停止中でも抜けられるように
+            pause_event.clear()
             print("⏹ 中止♡")
 
-    # 監視用リスナー（別スレッド）
     listener = Listener(on_press=on_press)
     listener.start()
 
-    # --- 再生本体 ---
     start = time.perf_counter()
-    paused_total = 0.0          # 停止していた合計時間
-    pause_started_at = None     # 停止開始時刻
+    paused_total = 0.0
+    pause_started_at = None
 
     try:
         for e in events:
@@ -91,19 +109,16 @@ def play_record():
 
             target_time = float(e.get("time", 0.0))
 
-            # 目標時刻まで待つ（途中で一時停止したら補正する♡）
             while True:
                 if stop_event.is_set():
                     break
 
-                # 一時停止中はここで待つ
                 if pause_event.is_set():
                     if pause_started_at is None:
                         pause_started_at = time.perf_counter()
                     time.sleep(0.03)
                     continue
                 else:
-                    # 停止から復帰した瞬間、停止時間を加算
                     if pause_started_at is not None:
                         paused_total += (time.perf_counter() - pause_started_at)
                         pause_started_at = None
@@ -112,7 +127,6 @@ def play_record():
                 if elapsed >= target_time:
                     break
 
-                # CPU爆食い防止♡（精度はそこそこ維持）
                 time.sleep(0.03)
 
             if stop_event.is_set():
