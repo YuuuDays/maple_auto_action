@@ -6,10 +6,6 @@ import src.key_reproduction as key_rep
 import time
 from datetime import datetime, timedelta, timezone
 from typing import Callable, Optional
-# def test_func():
-#     while True:
-#         test_ren.up_move1()
-#         time.sleep(2)
 
 #動きの記録
 def action_record():
