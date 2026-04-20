@@ -2,23 +2,60 @@ import time, json, threading
 from pynput.keyboard import Controller, Key, Listener
 from pathlib import Path
 
+LAST_USED_FILE = None  # play_record内で初期化
+
+def _load_last_used(record_dir: Path) -> dict:
+    path = record_dir / ".last_used.json"
+    if path.exists():
+        try:
+            return json.loads(path.read_text(encoding="utf-8"))
+        except Exception:
+            pass
+    return {}
+
+def _save_last_used(record_dir: Path, last_used: dict, key: str) -> None:
+    last_used[key] = time.time()
+    path = record_dir / ".last_used.json"
+    path.write_text(json.dumps(last_used, indent=2), encoding="utf-8")
+
 PAUSE_KEY = Key.f8   # 一時停止/再開
 STOP_KEY  = Key.f9   # 中止（任意）
 
-def choose_from_list(items, title, show_name=lambda p: p.name):
-    """番号選択ユーティリティ♡（itemsが空ならNone）"""
+def choose_from_list(items, title, show_name=lambda p: p.name, last_used_times=None):
+    """番号固定で表示順だけ変わる選択ユーティリティ♡
+    last_used_times: items と同じ長さの float リスト（0.0 = 未使用）
+    """
     if not items:
         print("選べる項目がないよ…♡")
         return None
 
+    # (元の番号, item) ペアに変換
+    numbered = list(enumerate(items, start=1))
+
+    if last_used_times:
+        # 未使用を元番号順で先に、使用済みを使用時刻昇順で後に（最後に使ったものが一番下）
+        def sort_key(pair):
+            i, _ = pair
+            t = last_used_times[i - 1]
+            return (1, t) if t > 0 else (0, i)
+        display_order = sorted(numbered, key=sort_key)
+    else:
+        display_order = numbered
+
     print(title)
-    for i, it in enumerate(items, start=1):
+    for i, it in display_order:
         print(f"[{i}] {show_name(it)}")
 
+    # 番号 → item の逆引きマップ
+    num_map = {i: it for i, it in numbered}
     try:
         choice = int(input("\n番号を選んでね → "))
-        return items[choice - 1]
-    except (ValueError, IndexError):
+        item = num_map.get(choice)
+        if item is None:
+            print("番号が正しくないよ…♡")
+            return None
+        return item
+    except ValueError:
         print("番号が正しくないよ…♡")
         return None
 
@@ -30,28 +67,36 @@ def play_record():
     BASE_DIR = Path(__file__).resolve().parent.parent
     RECORD_DIR = BASE_DIR / "records"
 
+    last_used = _load_last_used(RECORD_DIR)
+
     # --- 1段目：records直下のフォルダを選ぶ ---
-    # フォルダだけ抽出（.jsonファイルが直下に混ざってても無視）
     folders = sorted([p for p in RECORD_DIR.iterdir() if p.is_dir()])
+    folder_times = [last_used.get(p.name, 0.0) for p in folders]
 
     folder = choose_from_list(
         folders,
         title="再生したいフォルダを選んでね♡",
-        show_name=lambda p: p.name
+        show_name=lambda p: p.name,
+        last_used_times=folder_times,
     )
     if folder is None:
         return
 
     # --- 2段目：そのフォルダ内のjsonを選ぶ ---
     json_files = sorted(folder.glob("*.json"))
+    file_times = [last_used.get(f"{folder.name}/{p.name}", 0.0) for p in json_files]
 
     json_path = choose_from_list(
         json_files,
         title=f"\n『{folder.name}』の中の記録一覧だよ♡",
-        show_name=lambda p: p.name
+        show_name=lambda p: p.name,
+        last_used_times=file_times,
     )
     if json_path is None:
         return
+
+    _save_last_used(RECORD_DIR, last_used, folder.name)
+    _save_last_used(RECORD_DIR, last_used, f"{folder.name}/{json_path.name}")
 
     print(f"\n選択されたファイル → {folder.name}/{json_path.name}")
     print("再生開始♡（一時停止/再開: F8, 中止: F9）")
