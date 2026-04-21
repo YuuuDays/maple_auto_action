@@ -99,6 +99,10 @@ def play_record():
     _save_last_used(RECORD_DIR, last_used, f"{folder.name}/{json_path.name}")
 
     print(f"\n選択されたファイル → {folder.name}/{json_path.name}")
+    print("ゲームウィンドウに切り替えてね♡")
+    for i in range(3, 0, -1):
+        print(f"  {i}秒後に開始…")
+        time.sleep(1)
     print("再生開始♡（一時停止/再開: F8, 中止: F9）")
 
     with open(json_path, encoding="utf-8") as f:
